@@ -125,12 +125,14 @@ const adminHTML=()=>`<div class="card" style="display:block"><b style="margin-bo
 const loadProducts=safe(async()=>{
   products=await api('/products');
   const box=$('#plist');if(!box)return;
+  const a=$('#addp');if(a)a.onclick=safe(async()=>{
+    const name=$('#pn').value.trim(),price=+$('#pp').value,stock=+$('#ps').value;
+    if(!name||!(price>0)||!(stock>=0))throw new Error('Enter a name, a price above 0 and the stock');
+    await api('/products','POST',{name,price,stock});
+    toast('Product added');loadProducts()});
   if(!products.length){box.innerHTML='<p class="empty">No products yet. An admin can add the first one.</p>';return}
   box.innerHTML=products.map(p=>`<div class="card"><div><b>${esc(p.name)}</b><small>${inr(p.price)} · ${p.stock} in stock</small></div>
    <div class="qty"><button data-m="${p._id}" aria-label="Remove one">−</button><span>${cart[p._id]||0}</span><button data-p="${p._id}" aria-label="Add one">+</button></div></div>`).join('');
-  const a=$('#addp');if(a)a.onclick=safe(async()=>{
-    await api('/products','POST',{name:$('#pn').value.trim(),price:+$('#pp').value,stock:+$('#ps').value});
-    toast('Product added');loadProducts()});
 });
 const loadOrders=safe(async()=>{
   orders=await api('/orders');
