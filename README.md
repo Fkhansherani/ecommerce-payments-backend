@@ -63,3 +63,10 @@ server.js        Express API, models, auth, orders, payments, webhook
 public/          Frontend (index.html)
 .env.example     Required environment variables
 ```
+## Screenshots
+
+![Home](screenshots/home.jpeg)
+![Shop](screenshots/shop.jpeg)
+![Cart](screenshots/cart.jpeg)
+![Payment](screenshots/payment.jpeg)
+![Orders](screenshots/orders.jpeg)
