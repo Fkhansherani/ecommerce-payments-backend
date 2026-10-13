@@ -10,6 +10,7 @@ const app = express();
 // Webhook ko raw body chahiye (signature verify ke liye) - express.json se PEHLE
 app.use('/api/payments/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json());
+app.use(express.static('public')); // frontend (public/index.html)
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -67,8 +68,11 @@ async function markPaid(razorpayOrderId, paymentId) {
   }
   return order;
 }
-app.get('/', (_req, res) =>
+
+/* ---------- Health ---------- */
+app.get('/api/health', (_req, res) =>
   res.json({ status: 'ok', message: 'E-Commerce Payments API', docs: '/api/products' }));
+
 /* ---------- Auth ---------- */
 app.post('/api/auth/register', wrap(async (req, res) => {
   const { name, email, password } = req.body;
